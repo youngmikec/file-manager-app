@@ -1,5 +1,7 @@
 "use client";
 import { useCreateFolder } from "@/hooks/folder-hooks";
+import { CreateFolderRequest } from "@/validations/folder";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -10,12 +12,15 @@ interface Props {
 
 export default function CreateFolderModal({ isOpen, onClose }: Props) {
   const [name, setName] = useState("");
+  const params = useParams();
+  const folderId = params['id'] as string;
   const { mutate: createFolder, isPending } = useCreateFolder();
 
   const handleSubmit = () => {
     if (!name.trim()) return;
+    const payload: CreateFolderRequest = folderId ? { name: name.trim(), parentId: folderId } : { name: name.trim() };
     createFolder(
-      { name: name.trim() },
+      { ...payload },
       {
         onSuccess: () => {
           toast.success("Folder created successfully");

@@ -4,6 +4,7 @@ export interface Folder {
   ownerId: string;
   parentId: string | null;
   deletedAt: string | null;
+  children?: Folder[];
   createdAt: string;
   updatedAt: string;
 }
